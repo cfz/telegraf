@@ -286,6 +286,13 @@ func gatherInfoOutput(
 			continue
 		}
 
+		// buggy redis sometimes will report:
+		// used_memory_dataset:18446744073709551264
+		// used_memory_dataset_perc:27892138242998272.00%
+		if name == "used_memory_dataset" {
+			continue
+		}
+
 		// Try parsing as a float
 		if fval, err := strconv.ParseFloat(val, 64); err == nil {
 			fields[metric] = fval
